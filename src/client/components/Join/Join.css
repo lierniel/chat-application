@@ -1,0 +1,75 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+root {
+    height: 100vh;
+}
+
+.joinOuterContainer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    align-items: center;
+    background-color: black;
+}
+
+.joinInnerContainer {
+    width: 20%;
+}
+
+.joinInput {
+    background: black;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid white;
+    text-align: center;
+    font-size: 1.2em;
+    transition: 200ms ease-out;
+    color: white;
+    padding: 13px 0 5px 0;
+    width: 100%;
+
+}
+
+.heading {
+    font-size: 3em;
+    color: white;
+}
+
+.joinInput:focus {
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+}
+
+.button {
+    background-color: black;
+    color: white;
+    border: none;
+    outline: none;
+    transition: 200ms;
+    display: inline-block;
+    width: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.button:hover{
+    background-color: white;
+    color: black;
+}
+
+.button.disabled{
+    color: gray;
+    background-color: black;
+    pointer-events: none;
+}
+
+.mt-20{
+    margin-top: 20px;
+}

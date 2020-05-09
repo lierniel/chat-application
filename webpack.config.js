@@ -3,23 +3,60 @@ const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
+const isDev = process.env.NODE_ENV === 'development';
+const isProd = !isDev;
 
-const js = {
-    test: /\.js$/,
-    exclude: /node_modules/,
-    use: {
-        loader: 'babel-loader',
-        options: {
-            presets: ['@babel/react', '@babel/env']
+const fileName = ext => `bundle.${isProd ? '.[hash]':''}.${ext}`;
+
+const optimization = () => {
+    const config = {
+        splitChunks: {
+            chunks: 'all'
         }
+    };
+
+    if (isProd) {
+        config.minimizer = [
+            new OptimizeCssAssetsWebpackPlugin(),
+            new TerserWebpackPlugin(),
+        ]
     }
+
+    return config;
+};
+
+const jsLoader = (babelPreset) => {
+    const config = {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/env']
+            }
+        }
+    };
+    if (babelPreset){
+        config.loader.options.presets.push(babelPreset)
+    }
+
+    return config
 };
 
 const css = {
     test: /\.css$/,
     use: [
-        MiniCssExtractPlugin.loader,
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                hmr: isDev,
+                reloadAll: true,
+            }
+        },
         'css-loader',
     ],
 };
@@ -36,20 +73,14 @@ const serverConfig = {
     },
     module: {
         rules: [
-            js,
-            {
-                test: /\.css$/,
-                use: [
-                    'css-loader',
-                ],
-            }
+            jsLoader(),
         ]
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js'
     },
-    devtool: "inline-source-map"
+    devtool: "inline-source-map",
 };
 
 const clientConfig = {
@@ -58,22 +89,44 @@ const clientConfig = {
     entry: {
         'client.js': path.resolve(__dirname, 'src/client/index.js')
     },
+    optimization: optimization() ,
     plugins: [
-        new MiniCssExtractPlugin(),
-        new CleanWebpackPlugin()
+        new MiniCssExtractPlugin({
+            filename: fileName('css')
+        }),
+        new CleanWebpackPlugin(),
+        new HTMLWebpackPlugin({
+            template: path.resolve(__dirname, 'src/client/index.html'),
+            minify: {
+                collapseWhitespace: isProd
+            }
+        })
     ],
     module: {
         rules: [
-            js,
-            css
+            jsLoader('@babel/preset-react'),
+            css,
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'images',
+                            name: `${isProd ? '[hash]' : '[name]'}.[ext]`
+                        }
+                    },
+                ],
+            },
         ]
 
     },
     output: {
         path: path.resolve(__dirname, 'dist/public'),
-        filename: 'bundle.js'
+        filename: fileName('js'),
+        publicPath: '/static/'
     },
-    devtool: "inline-source-map"
+    devtool: "inline-source-map",
 };
 
 module.exports = [serverConfig, clientConfig];

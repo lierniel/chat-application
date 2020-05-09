@@ -1,0 +1,61 @@
+.messageText {
+  width: 100%;
+  letter-spacing: 0;
+  float: left;
+  font-size: 1.1em;
+  word-wrap: break-word;
+  margin-bottom: 0;
+}
+
+.messageDate {
+  text-align: right;
+  margin-top: 0;
+  font-size: 0.8em;
+}
+
+.sentByMe .messageDate {
+  text-align: left;
+}
+
+.sentText {
+  display: flex;
+  align-items: center;
+  font-family: Helvetica, serif ;
+  color: black;
+  letter-spacing: 0.3px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.messageContainer {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 2%;
+  margin-top: 3px;
+}
+
+.messageContainer.sentByMe {
+  justify-content: flex-end;
+}
+
+.messageBox {
+  background: white;
+  border-radius: 20px 5px;
+  padding: 5px 20px;
+  color: black;
+  display: inline-block;
+  min-width: 15%;
+  max-width: 80%;
+}
+
+.sentByMe .messageBox{
+  background: black;
+  color: white;
+  border-radius: 5px 20px;
+}

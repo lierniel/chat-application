@@ -1,24 +1,10 @@
 import express from 'express';
+import path from 'path';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send(renderHtml());
+router.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './public/index.html'));
 });
-
-function renderHtml(){
-    return `
-  <!doctype html>
-    <html>
-    <head>
-        <title>Server app</title>
-        <link rel="stylesheet" type="text/css" href="/static/client.js.css">
-    </head>
-    <body>
-        <div id="root"></div>
-        <script src="/static/bundle.js"></script>
-  </body>
-  </html>`;
-}
 
 export default router;

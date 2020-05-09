@@ -1,0 +1,9 @@
+.serviceMessageContainer{
+    justify-content: center;
+}
+
+.serviceMessageText{
+    text-align: center;
+    font-family: monospace;
+    font-size: 1.5em;
+}

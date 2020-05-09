@@ -1,0 +1,18 @@
+.messages {
+  padding-bottom: 5%;
+  overflow: auto;
+  flex: auto;
+  background: #6a676759;
+}
+
+.messages div::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.messages div::-webkit-scrollbar-track {
+  background: black;
+}
+
+.messages div::-webkit-scrollbar-thumb {
+  background: white;
+}
